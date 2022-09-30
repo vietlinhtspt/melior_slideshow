@@ -4,7 +4,7 @@
 A Flutter plugin for create beautiful slideshows.
 Supports Android, iOS and Web.
 
-|                    | Android | iOS  | Web | macOS | Window | Linux|
+| Platform | Android | iOS  | Web | macOS | Window | Linux|
 |-------------------| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Support** | SDK 16+ | 9.0+ | Any | ❌️ | ❌️ | ❌️ |
 
