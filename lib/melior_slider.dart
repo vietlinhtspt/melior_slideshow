@@ -327,11 +327,11 @@ class _SliderItemState extends State<SliderItem> with TickerProviderStateMixin {
   }
 
   bool _isTopPositionOnSurface(double dy) {
-    return (dy.abs() >= _topPosition.abs());
+    return (dy.abs() > _topPosition.abs());
   }
 
   bool _isLeftPositionOnSurface(double dx) {
-    return (dx.abs() >= _leftPosition.abs());
+    return (dx.abs() > _leftPosition.abs());
   }
 
   Future _removingAnimation(Offset endPosition) async {
@@ -370,16 +370,19 @@ class _SliderItemState extends State<SliderItem> with TickerProviderStateMixin {
     widget.onDeleteItem(widget.index);
   }
 
-  _checkAndStartAutoJump() {
-    if (widget.autoJump && widget.elevationIndex == 0) {
-      print('_checkAndStartAutoJump: ${widget.elevationIndex} ${widget.index}');
-      // Future.delayed(widget.autoJumnDuration).then((value) {
-      //   if (!_onMoving && mounted) {
-      //     final endPosition = widget.jumpingEndLocation ?? _defaultEndPosition;
+  bool _checkAndStartAutoJump() {
+    var isAutoJump = false;
+    if (widget.autoJump) {
+      isAutoJump = true;
+      Future.delayed(widget.autoJumnDuration).then((value) {
+        if (!_onMoving && mounted) {
+          final endPosition = widget.jumpingEndLocation ?? _defaultEndPosition;
 
-      //     _removingAnimation(endPosition);
-      //   }
-      // });
+          _removingAnimation(endPosition);
+        }
+      });
     }
+
+    return isAutoJump;
   }
 }

@@ -1,7 +1,7 @@
 name: melior_slider
-description: A new Flutter plugin project.
+description: A Flutter plugin for create beautiful slideshows. Supports Android, iOS and Web.
 version: 0.0.1
-homepage: MeliorSliderPlugin
+homepage: https://github.com/vietlinhtspt/melior_slideshow.git
 
 environment:
   sdk: '>=2.18.1 <3.0.0'
