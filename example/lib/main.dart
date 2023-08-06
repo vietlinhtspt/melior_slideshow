@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:melior_slider/melior_slider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -29,32 +30,79 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MeliorSlider(
-              maxSlide: _items.length,
-              numOfVisibleSlide: 3,
-              initialOffset: const Offset(100, 100),
-              deltaOffset: const Offset(20, 20),
-              autoJump: true,
-              onBuildChild: (({int currentElevationIndex = 0, int index = 0}) {
-                return SizedBox(
-                  width: 400,
-                  height: 200,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      _items[index],
-                      fit: BoxFit.cover,
-                    ),
+      home: HomeScreen(items: _items),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({
+    Key? key,
+    required List<String> items,
+  })  : _items = items,
+        super(key: key);
+
+  final List<String> _items;
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardWidth = MediaQuery.of(context).size.height * 2 / 3 > 400.0
+        ? 400.0
+        : MediaQuery.of(context).size.height * 2 / 3;
+    final cardHeight = cardWidth / 2;
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          MeliorSlider(
+            maxSlide: _items.length,
+            numOfVisibleSlide: 3,
+            initialOffset: Offset((screenWidth - cardWidth) / 2, 100),
+            deltaOffset: const Offset(20, 20),
+            autoJump: true,
+            onBuildChild: ((
+              currentElevationIndex,
+              index,
+            ) {
+              return SizedBox(
+                width: cardWidth,
+                height: cardHeight,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    _items[index],
+                    fit: BoxFit.cover,
                   ),
-                );
-              }),
-            ),
-          ],
-        ),
+                ),
+              );
+            }),
+          ),
+          MeliorSlider(
+            maxSlide: _items.length,
+            numOfVisibleSlide: 5,
+            initialOffset: Offset((screenWidth - cardWidth) / 2, 400),
+            deltaOffset: const Offset(20, 20),
+            autoJump: false,
+            onBuildChild: ((
+              currentElevationIndex,
+              index,
+            ) {
+              final currentWidth = cardWidth - currentElevationIndex * 20 * 2;
+              return SizedBox(
+                width: currentWidth,
+                height: cardHeight,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    _items[index],
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
       ),
     );
   }
